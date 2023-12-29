@@ -8,7 +8,7 @@ namespace SNOW
 {
     public class Cell
     {
-        public string S {  get; set; }
+        public string S { get; set; }
         public char C { get; set; }
 
 
@@ -26,6 +26,11 @@ namespace SNOW
         {
             Console.Write(S);
 
+        }
+
+        public  string GetCell()
+        {
+            return this.S;
         }
 
 

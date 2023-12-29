@@ -16,6 +16,7 @@ namespace SNOW
             S = $"|  {Num}  |";
             
         }
+
         public CellNumber(string s) : base()
         {
             S = s;
