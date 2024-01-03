@@ -89,9 +89,11 @@ void FileRead (List<List<Cell>> fieldRead, string path) {
 //  ФУНКЦИЯ  :  Вывод  поля  в  консоль
 void PrintField(List<List<Cell>> fieldGame)
 {
-    Console.WriteLine("\t\tСНЕЖКИ:");
+    Console.WriteLine("\n\tИГРА  В  СНЕЖКИ:");
     Console.WriteLine();
-    Console.WriteLine("\tИгрок  1:");
+    Console.WriteLine("\t   Игрок  1:");
+    Console.WriteLine();
+    Console.WriteLine(" * * *         * * *         * * * ");
     Console.WriteLine();
     for (int i = 0; i < fieldGame.Count; i++)
     {
@@ -118,351 +120,499 @@ void PrintField(List<List<Cell>> fieldGame)
         Console.WriteLine();
     }
     Console.WriteLine();
-    Console.WriteLine("\tИгрок  2:");
+    Console.WriteLine(" * * *         * * *         * * * ");
+    Console.WriteLine();
+    Console.WriteLine("\t   Игрок  2:\n\n");
 }
 
 
 
 FileWrite(field, path);
-Console.WriteLine("Записалось начальное поле field в файл");
+Console.WriteLine("Записалось начальное поле field в файл...");
 Console.ReadKey();
-//FileRead(fieldRead, path);
-//Console.WriteLine("Считалось начальное поле из файла в fieldRead");
-//Console.ReadKey();
-//PrintField(fieldRead);
-//Console.ReadKey();
 
 
-
-while (true)
+bool exit = true;
+while (exit)
 {
     string steps = new string("");
+    string steps2 = new string("");
     char[] step = new char[4];
+    int raund = 0;
 
-
-    bool f = true;
-    while (f)
+    for (int r1 = 0; r1 < 1; r1++)
     {
-        Console.WriteLine("\tИгрок 1, введите свои шаги (от 1 до 4 шагов)");
-        steps = Console.ReadLine(); // строка шагов
-        step = steps.ToCharArray(); // массив символов (шаги)
-        int numVal;
-        bool isNumber = int.TryParse(steps, out numVal);
-        f = false;
-        //  ПРОВЕРКА  на  правильность  ввода  шагов
-        if (steps.Length <= 0 || steps.Length > 4) // проверка на количетсво шагов и все сиволы - цифры
-        {
-            Console.WriteLine("Неверное количество шагов (должно быть мин.1 - макс.4");
-            f = true;
-        }
-        else if (!isNumber)
-        {
-            Console.WriteLine("В Вашем выборе есть символы, отличные от цифр");
-            f = true;
-        }
-        else
-        {
-            for (int i = 0; i < step.Length; i++)
-            {
-                if (step[i] != '1' && step[i] != '2' && step[i] != '3' && step[i] != '4' && step[i] != '5')
-                {
-                    Console.WriteLine("В Ваших шагах есть поля за границами игрового поля");
-                    f = true;
-                    break;
-                }
-            }
-            /*ДОДЕЛАТЬ проверку  на то что шаги должны быть рядом
-            for (int i = 0; i < step.Length - 1; i++)
-            {
-                if ((int)step[i] - (int)step[i + 1] != 1 || (int)step[i] - (int)step[i + 1] == 0 || (int)step[i] - (int)step[i + 1] != -1)
-                {
-                    Console.WriteLine("Шаги должны быть на соседние с игроком клетки (прыгать нельзя)");
-                    Console.WriteLine($"{(int)step[i]} - {(int)step[i + 1]} = {(int)step[i] - (int)step[i + 1]}");
-                    f = true;
-                    break;
-                }
-            }*/
-        }
 
-    }
-    Console.WriteLine("Хороший выбор)))");
-    Console.ReadKey();
-    int x = 0, y = 3;
-
-
-    for (int i = 0; i < step.Length; i++)
-    {
+        //  ИГРОК  1   -   АТАКА
+        raund++;
+        Console.WriteLine($"\tРАУНД  №  {raund}");
         FileRead(fieldRead, path);
-        //PrintField(fieldRead);
-        //Console.ReadKey();
-
-
-        if (step[i] != 0)
+        PrintField(fieldRead);
+        bool f = true;
+        while (f)
         {
-            int.TryParse(step[i].ToString(), out x); //  в х  записываем шаг игрока
-        }
-        //  сделать поиск снежинок
-        Console.WriteLine($"index 3 str  {fieldRead[3].FindIndex(x => x == cs1)}");
-        Console.WriteLine($"index 2 str  {fieldRead[2].FindIndex(x => x == cs1)}");
-        Console.WriteLine($"index 1 str  {fieldRead[1].FindIndex(x => x == cs1)}");
-        Console.WriteLine($"index 0 str  {fieldRead[0].FindIndex(x => x == cs1)}");
-
-        if (fieldRead[0].FindIndex(x => x == cs1) >= 0)  // если  * в поле с номерами
-        {
-            fieldRead[0][fieldRead[0].FindIndex(x => x == cs1)] = new CellNumber((fieldRead[0].FindIndex(x => x == cs1) + 1));
-        }
-        if (fieldRead[1].FindIndex(x => x == cs1) >= 0)  //  если * в поле 1
-        {
-            if (fieldRead[1].FindIndex(x => x == cs1) == fieldRead[0].FindIndex(x => x == cp1))
+            Console.WriteLine("\tИгрок 1, введите свои шаги для стрельбы снежкамм (от 1 до 4 шагов)\n Для выхода введите 0");
+            steps = Console.ReadLine(); // строка шагов
+            step = steps.ToCharArray(); // массив символов (шаги)
+            int numVal;
+            bool isNumber = int.TryParse(steps, out numVal);
+            f = false;
+            //  ПРОВЕРКА  на  правильность  ввода  шагов
+            if (steps.Length <= 0 || steps.Length > 4) // проверка на количетсво шагов и все сиволы - цифры
             {
-                Console.WriteLine("Снежок попал в ИГРОКА 1 ! \n >ИГРОК  1  ПРОИГРАЛ<");
-                Console.ReadKey();
-                break;
+                Console.WriteLine("Неверное количество шагов (должно быть мин.1 - макс.4");
+                f = true;
+            }
+            if (steps == "0") { exit = false; break; }
+            else if (!isNumber)
+            {
+                Console.WriteLine("В Вашем выборе есть символы, отличные от цифр");
+                f = true;
             }
             else
             {
-                fieldRead[0][fieldRead[1].FindIndex(x => x == cs1)] = cs1;
-                fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
+                for (int i = 0; i < step.Length; i++)
+                {
+                    if (step[i] != '1' && step[i] != '2' && step[i] != '3' && step[i] != '4' && step[i] != '5')
+                    {
+                        Console.WriteLine("В Ваших шагах есть поля за границами игрового поля");
+                        f = true;
+                        break;
+                    }
+                }
+                // проверка  на то что шаги должны быть рядом
+                for (int i = 0; i < step.Length; i++)
+                {
+                    int step1 = 0;
+                    int.TryParse(step[0].ToString(), out step1);
+
+                    if (step1 - fieldRead[0].FindIndex(x => x == cp1) != 0 && step1 - fieldRead[0].FindIndex(x => x == cp1) != 2)   // ?????
+                    {
+                        Console.WriteLine("Шаги должны быть на соседние с игроком клетки (прыгать нельзя)");
+                        Console.WriteLine($"Сейчас игрок 2 находится на позиции {((fieldRead[0].FindIndex(x => x == cp1) + 1))}");
+                        f = true;
+                        break;
+                    }
+
+                }
+            }
+
+        }
+        Console.WriteLine("Хороший выбор)))");
+        Thread.Sleep(1000);
+        int x = 0, y = 0;
+        //  передвижение игрока 2 (в атаке)  и снежков
+        if (exit)
+        {
+            for (int i = 0; i < step.Length; i++)
+            {
+                //FileRead(fieldRead, path);
+                Console.Clear();
+                if (step[i] != 0)
+                {
+                    int.TryParse(step[i].ToString(), out x); //  в х  записываем шаг игрока
+                }
+                //   поиск снежков
+
+                if (fieldRead[4].FindIndex(x => x == cs1) >= 0)  // если  * в поле с номерами
+                {
+                    fieldRead[4][fieldRead[4].FindIndex(x => x == cs1)] = new CellNumber((fieldRead[4].FindIndex(x => x == cs1) + 1));
+                }
+                if (fieldRead[3].FindIndex(x => x == cs1) >= 0)  //  если * в поле 1
+                {
+                    fieldRead[4][fieldRead[3].FindIndex(x => x == cs1)] = cs1;
+                    fieldRead[3][fieldRead[3].FindIndex(x => x == cs1)] = c1;
+                }
+                if (fieldRead[2].FindIndex(x => x == cs1) >= 0)  //  если * в поле 2
+                {
+                    fieldRead[3][fieldRead[2].FindIndex(x => x == cs1)] = cs1;
+                    fieldRead[2][fieldRead[2].FindIndex(x => x == cs1)] = c1;
+                }
+                if (fieldRead[1].FindIndex(x => x == cs1) >= 0)  //  если * в поле 3
+                {
+                    fieldRead[2][fieldRead[1].FindIndex(x => x == cs1)] = cs1;
+                    fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
+                }
+
+                //  передвижение игрока 2 и броски снежков
+                if ((x - 1) < fieldRead[0].FindIndex(x => x == cp1)) // x = 2 (x-1)=1, cp1 = 2 (left)
+                {
+                    fieldRead[0][x - 1] = cp1; // step[0] = 2 - > field[4][j] - j = 1
+                    fieldRead[0][x] = new CellNumber(x + 1);
+                    fieldRead[1][x - 1] = cs1; // 1-й снежок вылетел
+                }
+                else if ((x) > fieldRead[0].FindIndex(x => x == cp1))  // right
+                {
+                    fieldRead[0][x - 1] = cp1; // step[0] = 2 - > field[4][j] - j = 1
+                    fieldRead[0][x - 2] = new CellNumber(x - 1);
+                    fieldRead[1][x - 1] = cs1; // 1-й снежок вылетел
+                }
+                PrintField(fieldRead);
+                FileWrite(fieldRead, path);  //  после круга - записали в файл
+                Thread.Sleep(1000);
+                //Console.Clear(); 
+
+                //   ИГРОК  2  -  ЗАЩИТА
+                f = true;
+                while (f)
+                {
+                    Console.WriteLine("\tИгрок 2, введите свои шаги для уклонения от снежков (от 1 до 4 шагов)");
+                    steps2 = Console.ReadLine(); // строка шагов
+                    step = steps2.ToCharArray(); // массив символов (шаги)
+                    int numVal;
+                    bool isNumber = int.TryParse(steps2, out numVal);
+                    f = false;
+                    //  ПРОВЕРКА  на  правильность  ввода  шагов
+                    if (steps2.Length <= 0 || steps2.Length > 4) // проверка на количетсво шагов и все сиволы - цифры
+                    {
+                        Console.WriteLine("Неверное количество шагов (должно быть мин.1 - макс.4");
+                        f = true;
+                    }
+                    else if (steps2.Length != steps.Length)
+                    {
+                        Console.WriteLine($"Неверное количество шагов (должно быть такое же как у Игрока 1: {steps.Length} шага)");
+                        f = true;
+                    }
+                    else if (!isNumber)
+                    {
+                        Console.WriteLine("В Вашем выборе есть символы, отличные от цифр");
+                        f = true;
+                    }
+                    else
+                    {
+                        for (int k = 0; k < step.Length; k++)
+                        {
+                            if (step[k] != '1' && step[k] != '2' && step[k] != '3' && step[k] != '4' && step[k] != '5')
+                            {
+                                Console.WriteLine("В Ваших шагах есть поля за границами игрового поля");
+                                f = true;
+                                break;
+                            }
+                        }
+                        for (int k = 0; k < step.Length; k++)
+                        {
+                            int step1 = 0;
+                            int.TryParse(step[0].ToString(), out step1);
+
+                            if (step1 - fieldRead[4].FindIndex(x => x == cp2) != 0 && step1 - fieldRead[4].FindIndex(x => x == cp2) != 2)   // ?????
+                            {
+                                Console.WriteLine("Шаги должны быть на соседние с игроком клетки (прыгать нельзя)");
+                                Console.WriteLine($"Сейчас игрок 1 находится на позиции {((fieldRead[4].FindIndex(x => x == cp2) + 1))}");
+                                f = true;
+                                break;
+                            }
+
+                        }
+                    }
+
+                }
+                Console.WriteLine("Хороший выбор)))");
+                Thread.Sleep(1000);
+                //  передвижение игрока 2 (в защите)  и  снежков
+                for (int k = 0; k < step.Length; k++)
+                {
+                    FileRead(fieldRead, path);
+                    Console.Clear();
+                    if (step[i] != 0)
+                    {
+                        int.TryParse(step[i].ToString(), out y); //  в х  записываем шаг игрока
+                    }
+
+                    //  передвижение игрока 2 
+                    if (((y - 1) < fieldRead[4].FindIndex(x => x == cp2)) && (fieldRead[4].FindIndex(x => x == cp2) != -1)) // x = 2 (x-1)=1, cp1 = 2 (left)
+                    {
+                        fieldRead[4][y - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[4][y] = new CellNumber(y + 1);
+                    }
+                    else if ((y > fieldRead[4].FindIndex(x => x == cp2)) && (fieldRead[4].FindIndex(x => x == cp2) != -1))  // right
+                    {
+                        fieldRead[4][y - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[4][y - 2] = new CellNumber(y - 1);
+                    }
+                    //   поиск снежков (которые летят в игрока 2)
+
+                    if (fieldRead[4].FindIndex(x => x == cs1) >= 0)  // если  * в поле с номерами
+                    {
+                        fieldRead[4][fieldRead[4].FindIndex(x => x == cs1)] = new CellNumber((fieldRead[4].FindIndex(x => x == cs1) + 1));
+                        if (fieldRead[4].FindIndex(x => x == cp2) < 0)
+                        {
+                            Console.WriteLine("Снежок попал в ИГРОКА 2 ! \n >ИГРОК  2  ПРОИГРАЛ<");
+                            Console.ReadKey();
+                            exit = false;
+                            break;
+                        }
+                    }
+                    if (fieldRead[3].FindIndex(x => x == cs1) >= 0)  //  если * в поле 1
+                    {
+                        fieldRead[4][fieldRead[3].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[3][fieldRead[3].FindIndex(x => x == cs1)] = c1;
+
+                    }
+                    if (fieldRead[2].FindIndex(x => x == cs1) >= 0)  //  если * в поле 2
+                    {
+                        fieldRead[3][fieldRead[2].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[2][fieldRead[2].FindIndex(x => x == cs1)] = c1;
+                    }
+                    if (fieldRead[1].FindIndex(x => x == cs1) >= 0)  //  если * в поле 3
+                    {
+                        fieldRead[2][fieldRead[1].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
+                    }
+
+                    PrintField(fieldRead);
+                    FileWrite(fieldRead, path);  //  после круга - записали в файл
+                    Thread.Sleep(1000);
+
+                }
+
             }
         }
-        if (fieldRead[2].FindIndex(x => x == cs1) >= 0)  //  если * в поле 2
-        {
-            fieldRead[1][fieldRead[2].FindIndex(x => x == cs1)] = cs1;
-            fieldRead[2][fieldRead[2].FindIndex(x => x == cs1)] = c1;
-        }
-        if (fieldRead[3].FindIndex(x => x == cs1) >= 0)  //  если * в поле 3
-        {
-            fieldRead[2][fieldRead[3].FindIndex(x => x == cs1)] = cs1;
-            fieldRead[3][fieldRead[3].FindIndex(x => x == cs1)] = c1;
-        }
+        
 
         
-        if ((x - 1) < fieldRead[4].FindIndex(x => x == cp2)) // x = 2 (x-1)=1, cp1 = 2 (left)
+    }
+
+    if (exit)
+    {
+        for (int r1 = 0; r1 < 1; r1++)
         {
-            int j1 = step[i];
-            fieldRead[4][x - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
-            fieldRead[4][x] = new CellNumber(x + 1);
-            fieldRead[3][x - 1] = cs1; // 1-й снежок вылетел
+
+            //  ИГРОК  2   -   АТАКА
+            raund++;
+            Console.WriteLine($"\tРАУНД  №  {raund}");
+            FileRead(fieldRead, path);
+            PrintField(fieldRead);
+            bool f = true;
+            while (f)
+            {
+                Console.WriteLine("\tИгрок 2, введите свои шаги для стрельбы снежкамм (от 1 до 4 шагов)\n Для выхода введите 0");
+                steps = Console.ReadLine(); // строка шагов
+                step = steps.ToCharArray(); // массив символов (шаги)
+                int numVal;
+                bool isNumber = int.TryParse(steps, out numVal);
+                f = false;
+                //  ПРОВЕРКА  на  правильность  ввода  шагов
+                if (steps.Length <= 0 || steps.Length > 4) // проверка на количетсво шагов и все сиволы - цифры
+                {
+                    Console.WriteLine("Неверное количество шагов (должно быть мин.1 - макс.4");
+                    f = true;
+                }
+                if (steps == "0") { exit = false; break; }
+                else if (!isNumber)
+                {
+                    Console.WriteLine("В Вашем выборе есть символы, отличные от цифр");
+                    f = true;
+                }
+                else
+                {
+                    for (int i = 0; i < step.Length; i++)
+                    {
+                        if (step[i] != '1' && step[i] != '2' && step[i] != '3' && step[i] != '4' && step[i] != '5')
+                        {
+                            Console.WriteLine("В Ваших шагах есть поля за границами игрового поля");
+                            f = true;
+                            break;
+                        }
+                    }
+                    // проверкa  на то что шаги должны быть рядом
+                    for (int i = 0; i < step.Length; i++)
+                    {
+                        int step1 = 0;
+                        int.TryParse(step[0].ToString(), out step1);
+
+                        if (step1 - fieldRead[4].FindIndex(x => x == cp2) != 0 && step1 - fieldRead[4].FindIndex(x => x == cp2) != 2)   // ?????
+                        {
+                            Console.WriteLine("Шаги должны быть на соседние с игроком клетки (прыгать нельзя)");
+                            Console.WriteLine($"Сейчас игрок 2 находится на позиции {((fieldRead[4].FindIndex(x => x == cp2) + 1))}");
+                            f = true;
+                            break;
+                        }
+
+                    }
+                }
+
+            }
+            Console.WriteLine("Хороший выбор)))");
+            Thread.Sleep(1000);
+            int x = 0, y = 0;
+            //  передвижение игрока 2 (в атаке)  и снежков
+            if (exit)
+            {
+                for (int i = 0; i < step.Length; i++)
+                {
+                    //FileRead(fieldRead, path);
+                    Console.Clear();
+                    if (step[i] != 0)
+                    {
+                        int.TryParse(step[i].ToString(), out x); //  в х  записываем шаг игрока
+                    }
+                    //   поиск снежков
+
+                    if (fieldRead[0].FindIndex(x => x == cs1) >= 0)  // если  * в поле с номерами
+                    {
+                        fieldRead[0][fieldRead[0].FindIndex(x => x == cs1)] = new CellNumber((fieldRead[0].FindIndex(x => x == cs1) + 1));
+                    }
+                    if (fieldRead[1].FindIndex(x => x == cs1) >= 0)  //  если * в поле 1
+                    {
+                        fieldRead[0][fieldRead[1].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
+                    }
+                    if (fieldRead[2].FindIndex(x => x == cs1) >= 0)  //  если * в поле 2
+                    {
+                        fieldRead[1][fieldRead[2].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[2][fieldRead[2].FindIndex(x => x == cs1)] = c1;
+                    }
+                    if (fieldRead[3].FindIndex(x => x == cs1) >= 0)  //  если * в поле 3
+                    {
+                        fieldRead[2][fieldRead[3].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[3][fieldRead[3].FindIndex(x => x == cs1)] = c1;
+                    }
+
+                    //  передвижение игрока 2 и броски снежков
+                    if ((x - 1) < fieldRead[4].FindIndex(x => x == cp2)) // x = 2 (x-1)=1, cp1 = 2 (left)
+                    {
+                        fieldRead[4][x - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[4][x] = new CellNumber(x + 1);
+                        fieldRead[3][x - 1] = cs1; // 1-й снежок вылетел
+                    }
+                    else if ((x) > fieldRead[4].FindIndex(x => x == cp2))  // right
+                    {
+                        fieldRead[4][x - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[4][x - 2] = new CellNumber(x - 1);
+                        fieldRead[3][x - 1] = cs1; // 1-й снежок вылетел
+                    }
+                    PrintField(fieldRead);
+                    FileWrite(fieldRead, path);  //  после круга - записали в файл
+                    Thread.Sleep(1000);
+                    //Console.Clear(); 
+                }
+
+                //   ИГРОК  1  -  ЗАЩИТА
+                f = true;
+                while (f)
+                {
+                    Console.WriteLine("\tИгрок 1, введите свои шаги для уклонения от снежков (от 1 до 4 шагов)");
+                    steps2 = Console.ReadLine(); // строка шагов
+                    step = steps2.ToCharArray(); // массив символов (шаги)
+                    int numVal;
+                    bool isNumber = int.TryParse(steps2, out numVal);
+                    f = false;
+                    //  ПРОВЕРКА  на  правильность  ввода  шагов
+                    if (steps2.Length <= 0 || steps2.Length > 4) // проверка на количетсво шагов и все сиволы - цифры
+                    {
+                        Console.WriteLine("Неверное количество шагов (должно быть мин.1 - макс.4");
+                        f = true;
+                    }
+                    else if (steps2.Length != steps.Length)
+                    {
+                        Console.WriteLine($"Неверное количество шагов (должно быть такое же как у Игрока 1: {steps.Length} шага)");
+                        f = true;
+                    }
+                    else if (!isNumber)
+                    {
+                        Console.WriteLine("В Вашем выборе есть символы, отличные от цифр");
+                        f = true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < step.Length; i++)
+                        {
+                            if (step[i] != '1' && step[i] != '2' && step[i] != '3' && step[i] != '4' && step[i] != '5')
+                            {
+                                Console.WriteLine("В Ваших шагах есть поля за границами игрового поля");
+                                f = true;
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < step.Length; i++)
+                        {
+                            int step1 = 0;
+                            int.TryParse(step[0].ToString(), out step1);
+
+                            if (step1 - fieldRead[0].FindIndex(x => x == cp1) != 0 && step1 - fieldRead[0].FindIndex(x => x == cp1) != 2)   // ?????
+                            {
+                                Console.WriteLine("Шаги должны быть на соседние с игроком клетки (прыгать нельзя)");
+                                Console.WriteLine($"Сейчас игрок 1 находится на позиции {((fieldRead[0].FindIndex(x => x == cp1) + 1))}");
+                                f = true;
+                                break;
+                            }
+
+                        }
+                    }
+
+                }
+                Console.WriteLine("Хороший выбор)))");
+                Thread.Sleep(1000);
+                //  передвижение игрока 1 (в защите)  и  снежков
+                for (int i = 0; i < step.Length; i++)
+                {
+                    FileRead(fieldRead, path);
+                    Console.Clear();
+                    if (step[i] != 0)
+                    {
+                        int.TryParse(step[i].ToString(), out y); //  в х  записываем шаг игрока
+                    }
+
+                    //  передвижение игрока 1 
+                    if (((y - 1) < fieldRead[0].FindIndex(x => x == cp1)) && (fieldRead[0].FindIndex(x => x == cp1) != -1)) // x = 2 (x-1)=1, cp1 = 2 (left)
+                    {
+                        fieldRead[0][y - 1] = cp1; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[0][y] = new CellNumber(y + 1);
+                    }
+                    else if ((y > fieldRead[0].FindIndex(x => x == cp1)) && (fieldRead[0].FindIndex(x => x == cp1) != -1))  // right
+                    {
+                        fieldRead[0][y - 1] = cp1; // step[0] = 2 - > field[4][j] - j = 1
+                        fieldRead[0][y - 2] = new CellNumber(y - 1);
+                    }
+                    //   поиск снежков
+
+                    if (fieldRead[0].FindIndex(x => x == cs1) >= 0)  // если  * в поле с номерами
+                    {
+                        fieldRead[0][fieldRead[0].FindIndex(x => x == cs1)] = new CellNumber((fieldRead[0].FindIndex(x => x == cs1) + 1));
+                        if (fieldRead[0].FindIndex(x => x == cp1) < 0)
+                        {
+                            Console.WriteLine("Снежок попал в ИГРОКА 1 ! \n >ИГРОК  1  ПРОИГРАЛ<");
+                            Console.ReadKey();
+                            exit = false;
+                            break;
+                        }
+                    }
+                    if (fieldRead[1].FindIndex(x => x == cs1) >= 0)  //  если * в поле 1
+                    {
+                        fieldRead[0][fieldRead[1].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
+
+                    }
+                    if (fieldRead[2].FindIndex(x => x == cs1) >= 0)  //  если * в поле 2
+                    {
+                        fieldRead[1][fieldRead[2].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[2][fieldRead[2].FindIndex(x => x == cs1)] = c1;
+                    }
+                    if (fieldRead[3].FindIndex(x => x == cs1) >= 0)  //  если * в поле 3
+                    {
+                        fieldRead[2][fieldRead[3].FindIndex(x => x == cs1)] = cs1;
+                        fieldRead[3][fieldRead[3].FindIndex(x => x == cs1)] = c1;
+                    }
+
+                    PrintField(fieldRead);
+                    FileWrite(fieldRead, path);  //  после круга - записали в файл
+                    Thread.Sleep(1000);
+
+                }
+            }
             
+
+
         }
-        else if ((x) > fieldRead[4].FindIndex(x => x == cp2))  // right
-        {
-            fieldRead[4][x - 1] = cp2; // step[0] = 2 - > field[4][j] - j = 1
-            fieldRead[4][x - 2] = new CellNumber(x - 1);
-            fieldRead[3][x - 1] = cs1; // 1-й снежок вылетел
-            
-        }
-
-        
-        //y--;
-        PrintField(fieldRead);
-        FileWrite(fieldRead, path);  //  после круга - записали в файл
-        Console.ReadKey();
-       
-
-
-        /*
-        fieldRead[2][3] = cs1;
-        Console.WriteLine("Поменяли ячейку в fieldRead  пустое на звездочку");
-        Console.ReadKey();
-        FileWrite(fieldRead, path);
-
-        Console.WriteLine(" fieldRead  записали в файл");
-        Console.ReadKey();
-
-        FileRead(fieldRead, path);
-        Console.ReadKey();
-
-        PrintField(fieldRead);
-        */
     }
-}
-
-
-
-
-
-
-
-
-// if (x != field[4].FindIndex(x => x == cp2)) // cp1 в начале игры должно быть 2 (выбор не должен равняться позиции игрока)
-
-/*
-FileWrite(field, path);
-Console.WriteLine("Записалось начальное поле field в файл");
-Console.ReadKey();
-FileRead (fieldRead, path);
-Console.WriteLine("Считалось начальное поле из файла в fieldRead");
-Console.ReadKey();
-PrintField(fieldRead);
-Console.ReadKey();
-
-fieldRead[2][3] = cs1;
-Console.WriteLine("Поменяли ячейку в fieldRead  пустое на звездочку");
-Console.ReadKey();
-FileWrite(fieldRead, path);
-
-Console.WriteLine(" fieldRead  записали в файл");
-Console.ReadKey();
-
-FileRead(fieldRead, path);
-Console.ReadKey();
-
-PrintField(fieldRead);
-
-
-
-while (true)
-{
-    PrintField();
-    Console.WriteLine("Игрок 1, введите свои шаги (от 1 до 4 шагов)");
-
-    string steps = Console.ReadLine(); // строка шагов
-    char[] step = steps.ToCharArray(); // массив символов (шаги)
-    int numVal;
-    bool isNumber = int.TryParse(steps, out numVal);
-    
-        
-    Console.WriteLine("Выбор правильный");
-    Console.ReadKey();
-
-    for (int i = 0; i < 1;i++) 
-    {
-        
-        int x1;
-        int.TryParse(step[0].ToString(), out x1); // 2
-        int x2;
-        int.TryParse(step[1].ToString(), out x2);  // 1  
-        int x3;
-        int.TryParse(step[2].ToString(), out x3);  // 2
-
-        if (x1 <= field[4].FindIndex(x => x == cp1)) // cp1 в начале игры должно быть 2
-        {
-            field[4][x1 - 1] = new CellWithPlayer(); // step[0] = 2 - > field[4][j] - j = 1
-            field[4][x1] = new CellNumber(x1 + 1);  // откуда ушел игрок - делаем ячейкой с номером
-            field[3][x1- 1] = new CellWithSnow(); // 1-й снежок вылетел
-            PrintField();
-            Console.ReadKey();
-
-
-
-            field[4][x2 - 1] = new CellWithPlayer(); // step[0] = 2 - > field[4][j] - j = 1
-            field[4][x2] = new CellNumber(x1);  // откуда ушел игрок - делаем ячейкой с номером
-            field[2][x1 - 1] = new CellWithSnow();  // 1- снежок второй полет
-            field[3][x1 - 1] = new Cell();           // отсюда 1-й снежок улетел
-            field[3][x2 - 1] = new CellWithSnow();  //  2- снежок вылетел
-            PrintField();
-            Console.ReadKey();
-
-            field[4][x3 - 1] = new CellWithPlayer(); // step[0] = 2 - > field[4][j] - j = 1
-            field[4][x2 - 1] = new CellNumber(x2);  // откуда ушел игрок - делаем ячейкой с номером
-            field[1][x1 - 1] = new CellWithSnow(); // 1-й снежок
-            field[2][x1 - 1] = new Cell();  // 1- снежок улетел
-            field[2][x2 - 1] = new CellWithSnow(); // 2-й снежок
-            field[3][x2 - 1] = new Cell();  //  2- снежок улетел
-            field[3][x3 - 1] = new CellWithSnow(); // 3-й снежок вылетел
-            PrintField();
-            Console.ReadKey();
-        }
-        else {
-            field[4][x1 - 1] = new CellWithPlayer(); // step[0] = 4 - > field[4][j] - j = 3 
-            field[4][x1 - 2] = new CellNumber(x1 - 1);  // откуда ушел игрок - делаем ячейкой с номером
-            field[3][x1 - 1] = new CellWithSnow(); // 1-й снежок вылетел
-            PrintField();
-            Console.ReadKey();
-
-
-
-            field[4][x2 - 1] = new CellWithPlayer(); // step[0] = 5 - > field[4][j] - j = 4
-            field[4][x2 - 2] = new CellNumber(x1);  // откуда ушел игрок - делаем ячейкой с номером
-            field[2][x1 - 1] = new CellWithSnow();  // 1- снежок второй полет
-            field[3][x1 - 1] = new Cell();           // отсюда 1-й снежок улетел
-            field[3][x2 - 1] = new CellWithSnow();  //  2- снежок вылетел
-            PrintField();
-            Console.ReadKey();
-
-            field[4][x3 - 1] = new CellWithPlayer(); // step[0] = 2 - > field[4][j] - j = 1
-            field[4][x2 - 1] = new CellNumber(x2);  // откуда ушел игрок - делаем ячейкой с номером
-            field[1][x1 - 1] = new CellWithSnow(); // 1-й снежок
-            field[2][x1 - 1] = new Cell();  // 1- снежок улетел
-            field[2][x2 - 1] = new CellWithSnow(); // 2-й снежок
-            field[3][x2 - 1] = new Cell();  //  2- снежок улетел
-            field[3][x3 - 1] = new CellWithSnow(); // 3-й снежок вылетел
-            PrintField();
-            Console.ReadKey();
-        }
-        
-        
-        
-
-    }
-
-
-
-
-
-
-
     
 
 
 
-}
 
-
- 
-*/
-
-
-/*
-//  Вывод после считывания
-for (int i = 0; i < 5; i++)
-{
-    for (int j = 0; j < 5; j++)
-    {
-        fieldRead[i][j].PrintCell();
-    }
-    Console.WriteLine();
-}
-*/
-
-
-
-/*
-List<Cell> c = new List<Cell>();
-
-for (int i = 0; i < 5; i++)
-{
-    c.Add(new CellWithPlayer());
-    
-}
-
-foreach (var item in c)
-{
-    item.PrintCell();
-}
-
-foreach (var fs in field)
-{
-    foreach (var f in fs)
-    {
-        f.PrintCell();
-
-    }
-    Console.WriteLine();
 }
 
 
 
 
 
-//  ЗАПИСЬ поля в файл  (1-й вариант поэлементам)
-for (int i = 0; i < 5; i++)
-{
-
-    for (int j = 0; j < 5; j++)
-    {
-        File.AppendAllText(path, (field[i][j].S + "\n")); // запись в файл
-    }
-}
-*/
