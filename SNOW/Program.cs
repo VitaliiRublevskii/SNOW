@@ -91,9 +91,9 @@ void PrintField(List<List<Cell>> fieldGame)
 {
     Console.WriteLine("\n\tИГРА  В  СНЕЖКИ:");
     Console.WriteLine();
-    Console.WriteLine("\t   Игрок  1:");
-    Console.WriteLine();
-    Console.WriteLine(" * * *         * * *         * * * ");
+    Console.WriteLine("   *      *      *      *      *   ");
+    Console.WriteLine("  * *    *   Игрок   1   *    * *  ");
+    Console.WriteLine(" * * *    *      *      *    * * * ");
     Console.WriteLine();
     for (int i = 0; i < fieldGame.Count; i++)
     {
@@ -120,9 +120,11 @@ void PrintField(List<List<Cell>> fieldGame)
         Console.WriteLine();
     }
     Console.WriteLine();
-    Console.WriteLine(" * * *         * * *         * * * ");
+    Console.WriteLine("   *      *      *      *      *   ");
+    Console.WriteLine("  * *   *    Игрок   2    *   * *  ");
+    Console.WriteLine(" * * *    *      *      *    * * * ");
     Console.WriteLine();
-    Console.WriteLine("\t   Игрок  2:\n\n");
+   
 }
 
 
@@ -153,7 +155,7 @@ while (exit)
         bool f = true;
         while (f)
         {
-            Console.WriteLine("\tИгрок 1, введите свои шаги для стрельбы снежкамм (от 1 до 4 шагов)\n Для выхода введите 0");
+            Console.WriteLine("\t\tИгрок 1 \n\t введите свои шаги \n\t для стрельбы снежкамм\n\t (от 1 до 4 шагов)\n\t Для выхода введите 0");
             steps = Console.ReadLine(); // строка шагов
             step = steps.ToCharArray(); // массив символов (шаги)
             int numVal;
@@ -203,7 +205,7 @@ while (exit)
         Console.WriteLine("Хороший выбор)))");
         Thread.Sleep(1000);
         int x = 0, y = 0;
-        //  передвижение игрока 2 (в атаке)  и снежков
+        //  передвижение игрока 1 (в атаке)  и снежков
         if (exit)
         {
             for (int i = 0; i < step.Length; i++)
@@ -236,7 +238,7 @@ while (exit)
                     fieldRead[1][fieldRead[1].FindIndex(x => x == cs1)] = c1;
                 }
 
-                //  передвижение игрока 2 и броски снежков
+                //  передвижение игрока 1 и броски снежков
                 if ((x - 1) < fieldRead[0].FindIndex(x => x == cp1)) // x = 2 (x-1)=1, cp1 = 2 (left)
                 {
                     fieldRead[0][x - 1] = cp1; // step[0] = 2 - > field[4][j] - j = 1
@@ -258,7 +260,8 @@ while (exit)
             f = true;
             while (f)
             {
-                Console.WriteLine("\tИгрок 2, введите свои шаги для уклонения от снежков (от 1 до 4 шагов)");
+                
+                Console.WriteLine("\t\tИгрок 2 \n\t введите свои шаги \n\t для уклонения от снежков\n\t (от 1 до 4 шагов)");
                 steps2 = Console.ReadLine(); // строка шагов
                 step = steps2.ToCharArray(); // массив символов (шаги)
                 int numVal;
@@ -388,7 +391,8 @@ while (exit)
             bool f = true;
             while (f)
             {
-                Console.WriteLine("\tИгрок 2, введите свои шаги для стрельбы снежкамм (от 1 до 4 шагов)\n Для выхода введите 0");
+                Console.WriteLine("\t\tИгрок 2 \n\t введите свои шаги \n\t для стрельбы снежкамм\n\t (от 1 до 4 шагов)\n\t Для выхода введите 0");
+
                 steps = Console.ReadLine(); // строка шагов
                 step = steps.ToCharArray(); // массив символов (шаги)
                 int numVal;
@@ -494,7 +498,7 @@ while (exit)
                 f = true;
                 while (f)
                 {
-                    Console.WriteLine("\tИгрок 1, введите свои шаги для уклонения от снежков (от 1 до 4 шагов)");
+                    Console.WriteLine("\t\tИгрок 1 \n\t введите свои шаги \n\t для уклонения от снежков\n\t (от 1 до 4 шагов)");
                     steps2 = Console.ReadLine(); // строка шагов
                     step = steps2.ToCharArray(); // массив символов (шаги)
                     int numVal;
